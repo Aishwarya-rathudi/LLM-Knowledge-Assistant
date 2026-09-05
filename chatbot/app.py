@@ -1,0 +1,41 @@
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+
+import streamlit as st
+
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+# Explicitly locate .env in the project root
+env_path = Path(__file__).resolve().parent.parent / ".env"
+load_dotenv(dotenv_path=env_path)
+
+print("LangSmith key loaded:", bool(os.getenv("LANGSMITH_API_KEY")))
+
+## Langsmith tracking
+os.environ["LANGSMITH_TRACING"]="true"
+
+
+## Prompt Template
+
+prompt=ChatPromptTemplate.from_messages(
+    [
+        ("system","You are a helpful assistant. Please response to the user queries"),
+        ("user","Question:{question}")
+    ]
+)
+
+## streamlit framework
+
+st.title('Langchain Demo With OPENAI API')
+input_text=st.text_input("Search the topic u want")
+
+# openAI LLm 
+llm=ChatOpenAI(model="gpt-3.5-turbo")
+output_parser=StrOutputParser()
+chain=prompt|llm|output_parser
+
+if input_text:
+    st.write(chain.invoke({'question':input_text}))
