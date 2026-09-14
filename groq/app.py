@@ -28,7 +28,7 @@ if "vector" not in st.session_state:
 st.title("ChatGroq Demo")
 llm=ChatGroq(
              groq_api_key=groq_api_key,
-             model_name="qwen/qwen3.6-27b",
+             model_name="llama-3.3-70b-versatile",
              temperature=0,
              max_tokens=500
             )
