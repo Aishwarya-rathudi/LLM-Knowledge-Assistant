@@ -21,3 +21,4 @@ sentence-transformers
 PyPDF2
 bs4
 pypdf
+langchain-huggingface
