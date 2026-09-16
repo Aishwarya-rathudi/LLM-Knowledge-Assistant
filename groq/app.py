@@ -52,12 +52,41 @@ st.markdown(
 
     .stApp {
         background-color: #0e1117;
+        color: #e6edf3;
+    }
+
+    /* Force light, readable text on every default Streamlit element */
+    .stApp, .stApp p, .stApp span, .stApp label,
+    .stApp h1, .stApp h2, .stApp h3, .stApp h4,
+    .stMarkdown, .stMarkdown p,
+    [data-testid="stMarkdownContainer"] p,
+    [data-testid="stExpander"] p,
+    [data-testid="stExpander"] span,
+    [data-testid="stWidgetLabel"] p {
+        color: #e6edf3 !important;
+    }
+
+    /* Expander header + body background so it isn't stark white */
+    [data-testid="stExpander"] {
+        background-color: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 8px;
+    }
+    [data-testid="stExpander"] summary {
+        color: #e6edf3 !important;
+        background-color: #161b22;
+    }
+
+    /* Success / error / info banners: keep readable text on their own tinted backgrounds */
+    [data-testid="stAlert"] p {
+        color: #0e1117 !important;
     }
 
     .hero-title {
         font-size: 2.4rem;
         font-weight: 800;
         margin-bottom: 0.1rem;
+        color: #e6edf3;
     }
 
     .hero-subtitle {
@@ -69,7 +98,7 @@ st.markdown(
     .source-badge {
         display: inline-block;
         background-color: #1f2937;
-        color: #93c5fd;
+        color: #93c5fd !important;
         padding: 2px 10px;
         border-radius: 999px;
         font-size: 0.75rem;
@@ -84,11 +113,11 @@ st.markdown(
         padding: 0.8rem 1rem;
         margin-bottom: 0.8rem;
         font-size: 0.85rem;
-        color: #c9d1d9;
+        color: #c9d1d9 !important;
     }
 
     .timing {
-        color: #6b7280;
+        color: #9ca3af !important;
         font-size: 0.8rem;
         margin-top: 0.4rem;
     }
