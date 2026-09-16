@@ -6,12 +6,12 @@ import streamlit as st
 from dotenv import load_dotenv
 
 from langchain_groq import ChatGroq
-from langchain_ollama import OllamaEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.document_loaders import PyPDFLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_classic.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
-from langchain.chains import create_retrieval_chain
+from langchain_classic.chains import create_retrieval_chain
 from langchain_community.vectorstores import FAISS
 
 
@@ -26,7 +26,7 @@ groq_api_key = os.getenv("GROQ_API_KEY")
 if not groq_api_key:
     st.error(
         "GROQ_API_KEY was not found. "
-        "Please add it to your .env file."
+        "Please add it to your .env file (locally) or Secrets (on Streamlit Cloud)."
     )
     st.stop()
 
@@ -111,7 +111,7 @@ st.markdown(
 st.markdown(
     """
     <div class="hero-subtitle">
-        Ask questions about your PDF using RAG + Groq + Ollama + FAISS
+        Ask questions about your PDF using RAG + Groq + FAISS
     </div>
     """,
     unsafe_allow_html=True,
@@ -153,11 +153,13 @@ if "vectors" not in st.session_state:
         try:
 
             # ------------------------------------------------
-            # Ollama embedding model
+            # HuggingFace embedding model
+            # (runs locally in-process — no external server
+            # required, so this works on Streamlit Cloud)
             # ------------------------------------------------
 
-            st.session_state.embeddings = OllamaEmbeddings(
-                model="nomic-embed-text"
+            st.session_state.embeddings = HuggingFaceEmbeddings(
+                model_name="sentence-transformers/all-MiniLM-L6-v2"
             )
 
 
@@ -210,11 +212,6 @@ if "vectors" not in st.session_state:
             )
 
             st.error(str(e))
-
-            st.info(
-                "Make sure Ollama is running and "
-                "'nomic-embed-text' is installed."
-            )
 
             st.stop()
 
@@ -451,7 +448,7 @@ with st.sidebar:
     )
 
     st.write(
-        "**Embeddings:** nomic-embed-text"
+        "**Embeddings:** HuggingFace (all-MiniLM-L6-v2)"
     )
 
     st.write(
